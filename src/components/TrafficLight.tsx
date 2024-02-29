@@ -1,17 +1,36 @@
 import { useEffect, useState } from "react";
 
+function getLightStyles(id: string, currentLight: number) {
+  if (currentLight.toString() !== id) return "";
+  switch (currentLight) {
+    case 1: {
+      return "yellow";
+    }
+    case 2: {
+      return "green";
+    }
+    default: {
+      return "red";
+    }
+  }
+}
+
 const TrafficLight = () => {
   const [currentLight, setCurrentLight] = useState<number>(0);
 
   useEffect(() => {
     function getTimeout(): number {
-      if (currentLight === 0) {
-        return 4000;
-      } else if (currentLight === 1) {
-        return 500;
-      } else {
-        return 3000;
-      }
+        switch(currentLight) {
+            case(1): {
+                return 500;
+            }
+            case(2): {
+                return 3000;
+            }
+            default: {
+                return 4000;
+            }
+        }
     }
 
     function switchLights() {
@@ -26,9 +45,18 @@ const TrafficLight = () => {
   }, [currentLight]);
 
   return (
-    <div>
-      <div>Traffic Light</div>
-      <div>{currentLight}</div>
+    <div className="lights">
+      {Array.from({ length: 3 }).map((_, index) => {
+        return (
+          <div
+            key={index}
+            id={index.toString()}
+            className={`light ${getLightStyles(
+              index.toString(),
+              currentLight
+            )}`}></div>
+        );
+      })}
     </div>
   );
 };
