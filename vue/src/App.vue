@@ -1,0 +1,42 @@
+<script setup lang="ts">
+import TrafficLight from "./components/TrafficLight.vue";
+</script>
+
+<template>
+  <div>
+    <traffic-light />
+  </div>
+</template>
+
+<style scoped>
+.lights {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #aaa;
+  width: 100px;
+  padding: 10px;
+}
+
+.light {
+  width: 50px;
+  aspect-ratio: 1/1;
+  border: 1px solid #aaa;
+  border-radius: 50px;
+  background-color: #ccc;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+</style>
