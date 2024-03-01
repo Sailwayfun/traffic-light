@@ -5,7 +5,7 @@ This is a project exploring how React and Vue deal with side effects differently
 ## React
 In React, effects are run in a callback of the hook useEffect. The useEffect hook is run when a component is mounted to the DOM, and anytime a dependency listed in the second argument changes.
 
-Also, state is tracked through useState hook, so useEffect must deal with state updates, too.
+Also, the current light state needs to be run when a side effect is run, so useEffect must deal with state updates, too.
 
 setTimeout returns a timer that should be clear when the component is unmounted, that is, just before every next render. So useEffect should return a function that clears side effects.
 
