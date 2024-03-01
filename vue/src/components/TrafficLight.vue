@@ -1,28 +1,28 @@
 <template>
   <div class="lights">
-    <!-- {Array.from({ length: 3 }).map((_, index) => { return ( -->
-    <!-- <div
-      key="{index}"
-      id="{index.toString()}"
-      className="{`light"
-      ${getLightStyles(
-      index.toString(),
-      currentLight
-      )}`}
-    ></div> -->
-    <div v-for="n in 3" :key="n" :id="n.toString()" class="light" :class="lightClasses"></div>
+    <div
+      v-for="(num, index) in 3"
+      :key="index"
+      :id="index.toString()"
+      class="light"
+      :class="getLightStyles(index)"
+    ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 
-const currentLight = ref(0);
-const timeout = ref();
+const currentLight = ref<number>(0);
+const timeout = ref<number>();
 
-function getLightStyles(id: string, currentLight: number) {
-  if (currentLight.toString() !== id) return "";
-  switch (currentLight) {
+onMounted(() => {
+  console.log(currentLight.value);
+});
+
+function getLightStyles(id: number) {
+  if (id !== currentLight.value) return "";
+  switch (currentLight.value) {
     case 1: {
       return "yellow";
     }
@@ -34,7 +34,6 @@ function getLightStyles(id: string, currentLight: number) {
     }
   }
 }
-const lightClasses = getLightStyles(id, currentLight.value);
 
 watch(currentLight, () => {
   function getTimeout(): number {
@@ -51,12 +50,13 @@ watch(currentLight, () => {
     }
   }
   function switchLights() {
-    if (currentLight.value > 2) {
+    if (currentLight.value < 2) {
       currentLight.value++;
       return;
     }
     currentLight.value = 0;
   }
+  if (timeout.value) clearTimeout(timeout.value);
   timeout.value = setTimeout(switchLights, getTimeout());
 });
 onUnmounted(() => clearTimeout(timeout.value));
