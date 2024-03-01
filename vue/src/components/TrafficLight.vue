@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onUnmounted, ref, watchEffect } from "vue";
 
 const currentLight = ref<number>(0);
 const timeout = ref<number>();
@@ -28,12 +28,6 @@ function resetTimer(timeout = { value: 4000 }) {
   if (timeout.value) clearTimeout(timeout.value);
   timeout.value = setTimeout(switchLights, timeout.value);
 }
-
-onMounted(() => {
-  console.log(currentLight.value);
-  resetTimer();
-});
-
 function getLightStyles(id: number) {
   if (id !== currentLight.value) return "";
   switch (currentLight.value) {
@@ -49,7 +43,7 @@ function getLightStyles(id: number) {
   }
 }
 
-watch(currentLight, () => {
+watchEffect(() => {
   function getTimeout(): number {
     switch (currentLight.value) {
       case 1: {
