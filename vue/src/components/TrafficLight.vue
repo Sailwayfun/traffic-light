@@ -16,8 +16,22 @@ import { onMounted, onUnmounted, ref, watch } from "vue";
 const currentLight = ref<number>(0);
 const timeout = ref<number>();
 
+function switchLights() {
+  if (currentLight.value < 2) {
+    currentLight.value++;
+    return;
+  }
+  currentLight.value = 0;
+}
+
+function clearTimer(timeout = { value: 4000 }) {
+  if (timeout.value) clearTimeout(timeout.value);
+  timeout.value = setTimeout(switchLights, timeout.value);
+}
+
 onMounted(() => {
   console.log(currentLight.value);
+  clearTimer();
 });
 
 function getLightStyles(id: number) {
@@ -49,15 +63,7 @@ watch(currentLight, () => {
       }
     }
   }
-  function switchLights() {
-    if (currentLight.value < 2) {
-      currentLight.value++;
-      return;
-    }
-    currentLight.value = 0;
-  }
-  if (timeout.value) clearTimeout(timeout.value);
-  timeout.value = setTimeout(switchLights, getTimeout());
+  clearTimer({ value: getTimeout() });
 });
 onUnmounted(() => clearTimeout(timeout.value));
 </script>
